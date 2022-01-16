@@ -6,6 +6,7 @@ import api from '../../services/api';
 import formatCurrency from '../../utils/formatCurrency';
 
 import { useCart } from '../../hooks/cart';
+import FloatingCart from '../../componentes/FloatingCart';
 
 import {
   Container,
@@ -122,6 +123,7 @@ const Dashboard: React.FC = () => {
           )}
         />
       </ProductContainer>
+      <FloatingCart />
     </Container>
   );
 };
