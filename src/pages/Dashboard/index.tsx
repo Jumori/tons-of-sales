@@ -28,7 +28,7 @@ interface Product {
 }
 
 const Dashboard: React.FC = () => {
-  const { addToCart, removeFromCart } = useCart();
+  const { addToCart } = useCart();
 
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -65,18 +65,6 @@ const Dashboard: React.FC = () => {
     setProducts(updatedProducts);
   };
 
-  const handleRemoveFromCart = async (item: Product): Promise<void> => {
-    const newProductQuantity = await removeFromCart(item);
-    const updatedProducts = products.map(product => {
-      if (product.id === item.id) {
-        return { ...product, quantity: newProductQuantity };
-      }
-      return product;
-    });
-
-    setProducts(updatedProducts);
-  };
-
   return (
     <Container>
       <ProductContainer>
@@ -94,19 +82,6 @@ const Dashboard: React.FC = () => {
               <ProductTitle>{item.title}</ProductTitle>
               <PriceContainer>
                 <ProductPrice>{formatCurrency(item.price)}</ProductPrice>
-
-                {item.quantity > 0 && (
-                  <ProductButton
-                    testID={`remove-from-cart-${item.id}`}
-                    onPress={() => handleRemoveFromCart(item)}
-                  >
-                    <MaterialCommunityIcons
-                      size={20}
-                      color="#ff5252"
-                      name="minus-circle"
-                    />
-                  </ProductButton>
-                )}
 
                 <ProductButton
                   testID={`add-to-cart-${item.id}`}
