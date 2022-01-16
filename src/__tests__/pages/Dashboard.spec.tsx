@@ -24,8 +24,8 @@ jest.mock('../../hooks/cart.tsx', () => ({
   __esModule: true,
   useCart: jest.fn().mockReturnValue({
     products: [],
-    addToCart: jest.fn(() => 1),
-    removeFromCart: jest.fn(() => 0),
+    addToCart: jest.fn().mockReturnValue(1),
+    removeFromCart: jest.fn().mockReturnValue(0),
   }),
 }));
 
