@@ -5,6 +5,8 @@ import { View, Alert, FlatList } from 'react-native';
 import api from '../../services/api';
 import formatCurrency from '../../utils/formatCurrency';
 
+import { useCart } from '../../hooks/cart';
+
 import {
   Container,
   ProductContainer,
@@ -21,18 +23,24 @@ interface Product {
   title: string;
   image_url: string;
   price: number;
+  quantity: number;
 }
 
 const Dashboard: React.FC = () => {
+  const { addToCart, removeFromCart } = useCart();
+
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const loadProducts = async (): Promise<void> => {
       try {
-        const response = await api.get(
+        const response = await api.get<{ products: Product[] }>(
           'https://gist.githubusercontent.com/Jumori/c3451ba65a5027470122a81354718193/raw/tonsofsales-server.json',
         );
-        setProducts(response.data.products);
+        const parsedResponse = response.data.products.map(item => {
+          return { ...item, quantity: 0 };
+        });
+        setProducts(parsedResponse);
       } catch (error) {
         Alert.alert(
           'Sistema indisponível',
@@ -43,6 +51,30 @@ const Dashboard: React.FC = () => {
 
     loadProducts();
   }, []);
+
+  const handleAddToCart = async (item: Product): Promise<void> => {
+    const newProductQuantity = await addToCart(item);
+    const updatedProducts = products.map(product => {
+      if (product.id === item.id) {
+        return { ...product, quantity: newProductQuantity };
+      }
+      return { ...product };
+    });
+
+    setProducts(updatedProducts);
+  };
+
+  const handleRemoveFromCart = async (item: Product): Promise<void> => {
+    const newProductQuantity = await removeFromCart(item);
+    const updatedProducts = products.map(product => {
+      if (product.id === item.id) {
+        return { ...product, quantity: newProductQuantity };
+      }
+      return product;
+    });
+
+    setProducts(updatedProducts);
+  };
 
   return (
     <Container>
@@ -62,7 +94,23 @@ const Dashboard: React.FC = () => {
               <PriceContainer>
                 <ProductPrice>{formatCurrency(item.price)}</ProductPrice>
 
-                <ProductButton testID={`add-to-cart-${item.id}`}>
+                {item.quantity > 0 && (
+                  <ProductButton
+                    testID={`remove-from-cart-${item.id}`}
+                    onPress={() => handleRemoveFromCart(item)}
+                  >
+                    <MaterialCommunityIcons
+                      size={20}
+                      color="#ff5252"
+                      name="minus-circle"
+                    />
+                  </ProductButton>
+                )}
+
+                <ProductButton
+                  testID={`add-to-cart-${item.id}`}
+                  onPress={() => handleAddToCart(item)}
+                >
                   <MaterialCommunityIcons
                     size={20}
                     color="#00ad0c"
