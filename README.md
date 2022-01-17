@@ -20,7 +20,7 @@ Tabela de conteúdos
    * [Sobre o projeto](#-sobre-o-projeto)
    * [Como executar o projeto](#-como-executar-o-projeto)
      * [Pré-requisitos](#pré-requisitos)
-     * [Rodando a aplicação](#rodando-a-aplicação-web-frontend)
+     * [Rodando a aplicação](#rodando-a-aplicação-mobile)
    * [Tecnologias](#-tecnologias)
    * [Autora](#-autora)
    * [Licença](#user-content--licença)
