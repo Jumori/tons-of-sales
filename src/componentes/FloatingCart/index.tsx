@@ -39,7 +39,7 @@ const FloatingCart: React.FC = () => {
   }, [products]);
 
   const handleNavigateToCart = () => {
-    navigation.navigate('Dashboard' as never, {} as never);
+    navigation.navigate('Cart' as never, {} as never);
   };
 
   return (
