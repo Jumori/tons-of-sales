@@ -59,7 +59,7 @@ jest.mock('../../utils/formatCurrency.ts', () => ({
   default: jest.fn().mockImplementation(value => value),
 }));
 
-describe('Dashboard', () => {
+describe('FloatingCart component', () => {
   it('should be able to calculate the cart total price', async () => {
     const { getByText } = render(<FloatingCart />);
 
